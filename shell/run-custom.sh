@@ -1,6 +1,6 @@
-datapath=/root/cqy/dataset/Custom
-augpath=/root/cqy/dataset/dtd/images
-classes=('class1' 'class2')
+datapath=/home/tao/dataset/mvtec_anomaly_detection
+augpath=/home/tao/dataset/dtd-r1.0.1/dtd/images
+classes=('carpet')
 flags=($(for class in "${classes[@]}"; do echo '-d '"${class}"; done))
 
 cd ..
@@ -27,7 +27,7 @@ python main.py \
     --step 20 \
     --limit 392 \
   dataset \
-    --distribution 2 \
+    --distribution 0 \
     --mean 0.5 \
     --std 0.1 \
     --fg 0 \

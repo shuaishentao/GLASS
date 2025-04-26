@@ -216,14 +216,14 @@ class MVTecDataset(torch.utils.data.Dataset):
 
     def get_image_data(self):
         imgpaths_per_class = {}
-        maskpaths_per_class = {}
+        # maskpaths_per_class = {}
 
         classpath = os.path.join(self.source, self.classname, self.split.value)
         maskpath = os.path.join(self.source, self.classname, "ground_truth")
         anomaly_types = os.listdir(classpath)
 
         imgpaths_per_class[self.classname] = {}
-        maskpaths_per_class[self.classname] = {}
+        # maskpaths_per_class[self.classname] = {}
 
         for anomaly in anomaly_types:
             anomaly_path = os.path.join(classpath, anomaly)
@@ -233,9 +233,9 @@ class MVTecDataset(torch.utils.data.Dataset):
             if self.split == DatasetSplit.TEST and anomaly != "good":
                 anomaly_mask_path = os.path.join(maskpath, anomaly)
                 anomaly_mask_files = sorted(os.listdir(anomaly_mask_path))
-                maskpaths_per_class[self.classname][anomaly] = [os.path.join(anomaly_mask_path, x) for x in anomaly_mask_files]
-            else:
-                maskpaths_per_class[self.classname]["good"] = None
+                # maskpaths_per_class[self.classname][anomaly] = [os.path.join(anomaly_mask_path, x) for x in anomaly_mask_files]
+            # else:
+                # maskpaths_per_class[self.classname]["good"] = None
 
         data_to_iterate = []
         for classname in sorted(imgpaths_per_class.keys()):
@@ -243,7 +243,8 @@ class MVTecDataset(torch.utils.data.Dataset):
                 for i, image_path in enumerate(imgpaths_per_class[classname][anomaly]):
                     data_tuple = [classname, anomaly, image_path]
                     if self.split == DatasetSplit.TEST and anomaly != "good":
-                        data_tuple.append(maskpaths_per_class[classname][anomaly][i])
+                        # data_tuple.append(maskpaths_per_class[classname][anomaly][i])
+                        data_tuple.append(None)
                     else:
                         data_tuple.append(None)
                     data_to_iterate.append(data_tuple)

@@ -275,38 +275,38 @@ class GLASS(torch.nn.Module):
 
             if (i_epoch + 1) % self.eval_epochs == 0:
                 images, scores, segmentations, labels_gt, masks_gt = self.predict(val_data)
-                image_auroc, image_ap, pixel_auroc, pixel_ap, pixel_pro = self._evaluate(images, scores, segmentations,
-                                                                                         labels_gt, masks_gt, name)
+                # image_auroc, image_ap, pixel_auroc, pixel_ap, pixel_pro = self._evaluate(images, scores, segmentations,
+                #                                                                          labels_gt, masks_gt, name)
 
-                self.logger.logger.add_scalar("i-auroc", image_auroc, i_epoch)
-                self.logger.logger.add_scalar("i-ap", image_ap, i_epoch)
-                self.logger.logger.add_scalar("p-auroc", pixel_auroc, i_epoch)
-                self.logger.logger.add_scalar("p-ap", pixel_ap, i_epoch)
-                self.logger.logger.add_scalar("p-pro", pixel_pro, i_epoch)
+                # self.logger.logger.add_scalar("i-auroc", image_auroc, i_epoch)
+                # self.logger.logger.add_scalar("i-ap", image_ap, i_epoch)
+                # self.logger.logger.add_scalar("p-auroc", pixel_auroc, i_epoch)
+                # self.logger.logger.add_scalar("p-ap", pixel_ap, i_epoch)
+                # self.logger.logger.add_scalar("p-pro", pixel_pro, i_epoch)
 
                 eval_path = './results/eval/' + name + '/'
                 train_path = './results/training/' + name + '/'
-                if best_record is None:
-                    best_record = [image_auroc, image_ap, pixel_auroc, pixel_ap, pixel_pro, i_epoch]
-                    ckpt_path_best = os.path.join(self.ckpt_dir, "ckpt_best_{}.pth".format(i_epoch))
-                    torch.save(state_dict, ckpt_path_best)
-                    shutil.rmtree(eval_path, ignore_errors=True)
-                    shutil.copytree(train_path, eval_path)
+                # if best_record is None:
+                #     best_record = [image_auroc, image_ap, pixel_auroc, pixel_ap, pixel_pro, i_epoch]
+                #     ckpt_path_best = os.path.join(self.ckpt_dir, "ckpt_best_{}.pth".format(i_epoch))
+                #     torch.save(state_dict, ckpt_path_best)
+                #     shutil.rmtree(eval_path, ignore_errors=True)
+                #     shutil.copytree(train_path, eval_path)
 
-                elif image_auroc + pixel_auroc > best_record[0] + best_record[2]:
-                    best_record = [image_auroc, image_ap, pixel_auroc, pixel_ap, pixel_pro, i_epoch]
-                    os.remove(ckpt_path_best)
-                    ckpt_path_best = os.path.join(self.ckpt_dir, "ckpt_best_{}.pth".format(i_epoch))
-                    torch.save(state_dict, ckpt_path_best)
-                    shutil.rmtree(eval_path, ignore_errors=True)
-                    shutil.copytree(train_path, eval_path)
+                # elif image_auroc + pixel_auroc > best_record[0] + best_record[2]:
+                #     best_record = [image_auroc, image_ap, pixel_auroc, pixel_ap, pixel_pro, i_epoch]
+                #     os.remove(ckpt_path_best)
+                #     ckpt_path_best = os.path.join(self.ckpt_dir, "ckpt_best_{}.pth".format(i_epoch))
+                #     torch.save(state_dict, ckpt_path_best)
+                #     shutil.rmtree(eval_path, ignore_errors=True)
+                #     shutil.copytree(train_path, eval_path)
 
-                pbar_str1 = f" IAUC:{round(image_auroc * 100, 2)}({round(best_record[0] * 100, 2)})" \
-                            f" IAP:{round(image_ap * 100, 2)}({round(best_record[1] * 100, 2)})" \
-                            f" PAUC:{round(pixel_auroc * 100, 2)}({round(best_record[2] * 100, 2)})" \
-                            f" PAP:{round(pixel_ap * 100, 2)}({round(best_record[3] * 100, 2)})" \
-                            f" PRO:{round(pixel_pro * 100, 2)}({round(best_record[4] * 100, 2)})" \
-                            f" E:{i_epoch}({best_record[-1]})"
+                # pbar_str1 = f" IAUC:{round(image_auroc * 100, 2)}({round(best_record[0] * 100, 2)})" \
+                #             f" IAP:{round(image_ap * 100, 2)}({round(best_record[1] * 100, 2)})" \
+                #             f" PAUC:{round(pixel_auroc * 100, 2)}({round(best_record[2] * 100, 2)})" \
+                #             f" PAP:{round(pixel_ap * 100, 2)}({round(best_record[3] * 100, 2)})" \
+                #             f" PRO:{round(pixel_pro * 100, 2)}({round(best_record[4] * 100, 2)})" \
+                #             f" E:{i_epoch}({best_record[-1]})"
                 pbar_str += pbar_str1
                 pbar.set_description_str(pbar_str)
 
